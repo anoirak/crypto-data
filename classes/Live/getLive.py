@@ -8,6 +8,7 @@ import dateparser
 import yfinance as yf
 from datetime import datetime, timezone
 from classes.database.database import UpdateDB
+import numpy as np 
 from dateutil.parser import parse
 import requests
 import time
@@ -20,6 +21,11 @@ dbObj = UpdateDB(mysql.connector.connect(user=c.d_user, password=c.d_pass,
                                          host=c.d_host,
                                          database=c.d_name), "")
 
+
+
+def calculate_delay_live():
+    random_array = [i for i in range(7,31)]
+    return np.random.choice(random_array)
 
 def getBSE(sticker):
 
@@ -87,7 +93,8 @@ def getNASDAQ(sticker):
 
 
 def get_nasdaq_live(sticker):
-    time.sleep(1)
+    delay = calculate_delay_live()
+    time.sleep(delay)
     url = "https://query1.finance.yahoo.com/v8/finance/chart/{}?formatted=true&interval=1d&range=1d&useYfid=true&corsDomain=finance.yahoo.com".format(
         sticker)
     h = {
@@ -102,7 +109,8 @@ def get_nasdaq_live(sticker):
 
 
 def get_lse_live(sticker):
-    time.sleep(1)
+    delay = calculate_delay_live()
+    time.sleep(delay)
     url = "https://query1.finance.yahoo.com/v8/finance/chart/{}?formatted=true&interval=1d&range=1d&useYfid=true&corsDomain=finance.yahoo.com".format(
         sticker)
     if sticker.endswith("l"):
@@ -121,7 +129,8 @@ def get_lse_live(sticker):
 
 
 def get_nse_live(sticker):
-    time.sleep(1)
+    delay=calculate_delay_live()
+    time.sleep(delay)
     url = "https://query1.finance.yahoo.com/v8/finance/chart/{}?formatted=true&interval=1d&range=1d&useYfid=true&corsDomain=finance.yahoo.com".format(
         sticker+".NS")
     h = {

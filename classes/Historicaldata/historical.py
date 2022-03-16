@@ -6,6 +6,7 @@ import datetime
 import dateparser
 import yfinance as yf
 from classes.database.database import UpdateDB
+import numpy as np
 import requests
 import time
 import mysql.connector
@@ -16,6 +17,15 @@ result = []
 dbObj = UpdateDB(mysql.connector.connect(user=c.d_user, password=c.d_pass,
                                          host=c.d_host,
                                          database=c.d_name), "")
+
+def calculate_history_delay():
+    dict = {
+    1 : [i for i in range(7,31)],
+    2 : [i for i in range(4*3600,6*3600)]
+    }
+    # 90% probablity to choose a delay between 7 and 30 seconds
+    choosen_index = np.random.choice(a=[1,2] , p = [0.9,0.1])
+    return np.random.choice(a=dict[choosen_index])
 
 
 def getBSE(sticker):
@@ -74,7 +84,8 @@ def getNASDAQ(sticker):
 
 
 def get_nasdaq_history(sticker):
-    time.sleep(13)
+    delay = calculate_history_delay()
+    time.sleep(delay)
     five_years_back_date = (datetime.datetime.now() +
                             datetime.timedelta(-1826)).strftime('%s')
     date_today = (datetime.datetime.now()).strftime('%s')
@@ -93,7 +104,8 @@ def get_nasdaq_history(sticker):
 
 
 def get_nse_history(sticker):
-    time.sleep(12)
+    delay = calculate_history_delay()
+    time.sleep(delay)
     five_years_back_date = (datetime.datetime.now() +
                             datetime.timedelta(-1826)).strftime('%s')
     date_today = (datetime.datetime.now()).strftime('%s')
@@ -112,7 +124,8 @@ def get_nse_history(sticker):
 
 
 def get_lse_history(sticker):
-    time.sleep(9)
+    delay = calculate_history_delay()
+    time.sleep(delay)
     five_years_back_date = (datetime.datetime.now() +
                             datetime.timedelta(-1826)).strftime('%s')
     date_today = (datetime.datetime.now()).strftime('%s')
